@@ -30,33 +30,45 @@ shuffledThings.forEach((letter) => {
     letter.classList.add("center");
   }
   let offsetX, offsetY;
-  letter.addEventListener("mousedown", (e) => {
+  const startDrag = (e) => {
     if (e.target.tagName !== "BUTTON") {
       letter.classList.add("expanded");
+      const isTouch = e.type.includes("touch");
+      const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+      const clientY = isTouch ? e.touches[0].clientY : e.clientY;
       const rect = letter.getBoundingClientRect();
 
       letter.style.position = "fixed";
       letter.style.left = `${rect.left}px`;
       letter.style.top = `${rect.top}px`;
 
-      offsetX = e.clientX - rect.left;
-      offsetY = e.clientY - rect.top;
+      offsetX = clientX - rect.left;
+      offsetY = clientY - rect.top;
 
       letter.style.zIndex = zIndexCounter++;
       const moveAt = (posX, posY) => {
         letter.style.left = `${posX - offsetX}px`;
         letter.style.top = `${posY - offsetY}px`;
       };
-      const onMouseMove = (moveEvent) =>
-        moveAt(moveEvent.clientX, moveEvent.clientY);
-      const onMouseUp = () => {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
+      const onMove = (moveEvent) => {
+        const mx = moveEvent.type.includes("touch") ? moveEvent.touches[0].clientX : moveEvent.clientX;
+        const my = moveEvent.type.includes("touch") ? moveEvent.touches[0].clientY : moveEvent.clientY;
+        moveAt(mx, my);
       };
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
+      const onUp = () => {
+        document.removeEventListener("mousemove", onMove);
+        document.removeEventListener("mouseup", onUp);
+        document.removeEventListener("touchmove", onMove);
+        document.removeEventListener("touchend", onUp);
+      };
+      document.addEventListener("mousemove", onMove);
+      document.addEventListener("mouseup", onUp);
+      document.addEventListener("touchmove", onMove, { passive: false });
+      document.addEventListener("touchend", onUp);
     }
-  });
+  };
+  letter.addEventListener("mousedown", startDrag);
+  letter.addEventListener("touchstart", startDrag, { passive: false });
 });
 document.querySelector("#openEnvelope").addEventListener("click", () => {
   document.querySelector(".envelope").classList.toggle("active");
