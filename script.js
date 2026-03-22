@@ -2,17 +2,10 @@ const letters = document.querySelectorAll(".letter");
 const lettersContainer = document.querySelector(".letters");
 let zIndexCounter = 10;
 
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-};
+// Sort descending so id="1" is rendered last and appears on top
+const sortedThings = Array.from(letters).sort((a, b) => parseInt(b.id || 0) - parseInt(a.id || 0));
 
-const shuffledThings = Array.from(letters);
-shuffleArray(shuffledThings);
-
-shuffledThings.forEach((letter) => {
+sortedThings.forEach((letter) => {
   lettersContainer.appendChild(letter);
   const center =
     document.querySelector(".cssletter").offsetWidth / 2 -
