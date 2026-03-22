@@ -64,6 +64,13 @@ const closeButtons = document.querySelectorAll(".closeLetter");
 closeButtons.forEach((button) => {
   button.addEventListener("click", (e) => {
     e.preventDefault();
-    document.querySelector(".envelope").classList.remove("active");
+    const letter = e.target.closest('.letter');
+    if (letter) {
+      letter.style.position = "";
+      const center = document.querySelector(".cssletter").offsetWidth / 2 - letter.offsetWidth / 2;
+      letter.style.left = `${center}px`;
+      letter.style.top = "1rem";
+      letter.style.zIndex = "";
+    }
   });
 });

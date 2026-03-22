@@ -54,7 +54,8 @@ body {
 }
 
 .envelope::before {
-  content: "˚ʚ❤︎ɞ˚";
+  content: "Love";
+  font-family: var(--letter-font);
   font-size: 5rem;
   color: white;
   position: absolute;
@@ -297,7 +298,7 @@ body {
 }
 
 .closeLetter::before {
-  content: "˚ʚ❤︎ɞ˚";
+  content: "Close";
   font-size: 1.5rem !important;
   font-family: var(--letter-font);
   color: var(--letter-button-text);
@@ -318,6 +319,23 @@ body {
 .closeLetter:active::before,
 .closeLetter:focus::before {
   content: "xXx";
+}
+
+/* Professional Custom Scrollbar */
+.letter::-webkit-scrollbar {
+  width: 6px;
+}
+.letter::-webkit-scrollbar-track {
+  background: var(--letter-bg);
+  border-radius: 4px;
+}
+.letter::-webkit-scrollbar-thumb {
+  background-color: var(--letter-shadow);
+  border-radius: 4px;
+}
+.letter {
+  scrollbar-width: thin;
+  scrollbar-color: var(--letter-shadow) var(--letter-bg);
 }
 
 /* Attribution */
