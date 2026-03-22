@@ -32,7 +32,8 @@ shuffledThings.forEach((letter) => {
   let offsetX, offsetY;
   letter.addEventListener("mousedown", (e) => {
     if (e.target.tagName !== "BUTTON") {
-      const rect = e.target.getBoundingClientRect();
+      letter.classList.add("expanded");
+      const rect = letter.getBoundingClientRect();
 
       letter.style.position = "fixed";
       letter.style.left = `${rect.left}px`;
@@ -66,11 +67,23 @@ closeButtons.forEach((button) => {
     e.preventDefault();
     const letter = e.target.closest('.letter');
     if (letter) {
+      letter.classList.remove("expanded");
       letter.style.position = "";
       const center = document.querySelector(".cssletter").offsetWidth / 2 - letter.offsetWidth / 2;
       letter.style.left = `${center}px`;
       letter.style.top = "1rem";
       letter.style.zIndex = "";
     }
+    document.querySelector(".envelope").classList.add("active");
   });
+});
+
+document.addEventListener("click", (e) => {
+  const envelope = document.querySelector(".envelope");
+  const isClickInsideEnvelope = envelope.contains(e.target);
+  const isClickInsideLetter = e.target.closest('.letter');
+  
+  if (!isClickInsideEnvelope && !isClickInsideLetter && envelope.classList.contains("active")) {
+    envelope.classList.remove("active");
+  }
 });
